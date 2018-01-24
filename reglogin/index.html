@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <button type="button" name="button" onclick="reg()">提交</button>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript">
+
+    function reg() {
+      var time = new Date();
+      // url 本地服务务必添加http：
+      $.ajax({url: 'http://localhost:8081/process_post',
+        data: {
+          name:'我是代码' + time.getSeconds(),
+          password: '654645',
+        },
+        dataType: 'json',
+        'Conten-tType': "application/json;charset=utf-8",
+        type: 'POST',
+        succuess: function(res) {
+          console.log(res);
+        }
+      });
+    }
+    </script>
+  </body>
+</html>
