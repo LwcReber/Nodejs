@@ -26,7 +26,9 @@ app.all('*', function(req, res, next) {
 connection.connect();
 // 数据库-查操作 查询用户是否已经存在
 const checkExist = function (name) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
+    // 防止中文乱码
+    connection.query("set names utf8");
     let sql = `SELECT name FROM userlist WHERE name='${name}'`;
     connection.query(sql, function(err, res, fils) {
       if(err) {
@@ -40,53 +42,46 @@ const checkExist = function (name) {
 
 // mysql 增操作
 const addUser = function (param) {
-  return new Promise(function(resolve, reject) {
-
-    checkExist(param.body.name)
-      .then(function(result) {
-        if(result.length == 0) {
-          // 防止中文乱码
-          connection.query("set names utf8");
-          let addSql = `INSERT INTO userlist(id,name,password) VALUES(0,'${param.body.name}', '${param.body.password}')`;
-          connection.query(addSql, function(err, result) {
-            if(err) {
-              console.log('[INSERT ERROR] - ', err.message);
-              return reject(err);
-            }
-            return resolve({code: 200});
-          })
-        } else {
-          return resolve({code: -1});
+  return new Promise((resolve, reject) => {
+      // 防止中文乱码
+      connection.query("set names utf8");
+      //数据库设置id需要自动增加
+      let addSql = `INSERT INTO userlist(id,name,password) VALUES(0,'${param.body.name}', '${param.body.password}')`;
+      connection.query(addSql, function(err, result) {
+        if(err) {
+          console.log('[INSERT ERROR] - ', err.message);
+          return reject(err);
         }
+        return resolve({code: 200});
       })
-      .catch(function(err) {
-        return reject(err);
-      })
-
-
   });
 }
 
-app.post('/process_post', urlencodedParser, function (req, res) {
+app.post('/process_post', urlencodedParser, (req, res) => {
   // 输出json格式
   // 数据直接放在sql语法中
   let param = req;
-
-  addUser(param)
-  .then(function(data) {
-    console.log('写入成功');
-    if (data.hasOwnProperty("code")) {
-      if(data.code == -1 ) {
+  // 是否已经存在该用户
+  checkExist(param.body.name)
+    .then((result) => {
+      if(result.length != 0) {
         res.end(JSON.stringify({msg: '该用户名已被注册'}));
       } else {
-        res.end(JSON.stringify({msg: '注册成功'}));
+        // 注册该用户
+        addUser(param)
+        .then( (data) => {
+          console.log('写入成功');
+          res.end(JSON.stringify({msg: '注册成功'}));
+        })
+        .catch((err) => {
+          console.log(err);
+          res.end(JSON.stringify({msg: err}));
+        })
       }
-    }
-  })
-  .catch(function(err) {
-    console.log(err);
-    res.end(JSON.stringify({msg: err}));
-  })
+    })
+    .catch((err) => {
+      res.end(JSON.stringify({msg: err}));
+    })
 
 })
 
