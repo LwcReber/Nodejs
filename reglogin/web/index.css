@@ -1,0 +1,32 @@
+body {
+  padding: 0px;
+  margin: 0px;
+
+}
+/* color */
+.colW {
+  color: white;
+}
+ /* padding */
+.tPad10 {
+  padding-top: 10px;
+}
+
+/* margin */
+.tMar10 {
+  margin-top: 10px;
+}
+.tMar20 {
+  margin-top: 20px;
+}
+
+
+.disInline {
+  display: inline-block;
+}
+.disNone {
+  display: none;
+}
+.wid90 {
+  width: 90px;
+}
