@@ -1,19 +1,15 @@
-var express = require('express');
-var cookieParser = require('cookie-parser');
-var app = express();
-var mysql = require('mysql');
-var bodyParser = require('body-parser');
+let express = require('express');
+let cookieParser = require('cookie-parser');
+let app = express();
+let mysql = require('mysql');
+let bodyParser = require('body-parser');
 app.use(cookieParser());
-// 创建application/x-www-form-urlencoded 编码解析
-var urlencodedParser = bodyParser.urlencoded({extended: false });
 
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  port: '3306',
-  database: 'user'
-});
+// 创建application/x-www-form-urlencoded 编码解析
+let urlencodedParser = bodyParser.urlencoded({extended: false });
+
+let sqlcon = require('./sqlconfig.js'); // mysql配置
+let connection = mysql.createConnection(sqlcon);
 
 //设置跨域访问
 app.all('*', function(req, res, next) {
@@ -115,8 +111,8 @@ app.get('/login', (req, res) => {
     })
 })
 
-var server  = app.listen(8081, function () {
-  var host = server.address().address
-  var port = server.address().port
-  console.log('应用实例， 访问地址为 http://%s:%s', host, port);
+let server  = app.listen(8081, 'localhost', function () {
+  let host = server.address().address
+  let port = server.address().port
+  console.log('应用实例， 访问地址为http://' + host + ':' + port);
 })
