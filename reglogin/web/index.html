@@ -28,8 +28,8 @@
         text-align: center;
       }
       .regForm {
-        height: 300px;
-        margin-top: -150px;
+        height: 280px;
+        margin-top: -140px;
       }
       .button {
           background-color: white; /* Green */
@@ -125,15 +125,18 @@
             <button  class="button regBtn" onclick="login()">登录</button>
           </div>
         </div>
-
       </div>
     </div>
     <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="cookie.min.js" charset="utf-8"></script>
     <script type="text/javascript">
       // 修改ajax配置
       $.ajaxSetup({
         dataType: 'json',
-         'Conten-tType': "application/json;charset=utf-8"
+         'Conten-tType': "application/json;charset=utf-8",
+          xhrFields: {// node设置cookie需要开启该处
+            withCredentials: true
+          }
        })
     </script>
     <script src="util.js" charset="utf-8"></script>

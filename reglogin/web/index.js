@@ -1,3 +1,11 @@
+$(function() {
+  var uInfo = docCookies.getItem('name');
+  console.log(uInfo);
+  // 如果有cookie name直接跳到主页
+  if (uInfo) {
+    location.href = '/home.html';
+  }
+})
 /**
  * reg - 用户注册
  *
@@ -55,9 +63,10 @@ function reg() {
           alert('登录成功')
           $('#regName').val('')
           $('#regPsw').val('');
-          setTimeout(function() {
-            location.href = 'home.html';
-          }, 1000);
+
+          // setTimeout(function() {
+          //   location.href = 'home.html';
+          // }, 1000);
         } else {
           alert(res.msg)
         }
