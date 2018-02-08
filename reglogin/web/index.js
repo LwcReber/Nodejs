@@ -1,5 +1,5 @@
 $(function() {
-  var uInfo = docCookies.getItem('name');
+  let uInfo = docCookies.getItem('name');
   console.log(uInfo);
   // 如果有cookie name直接跳到主页
   if (uInfo) {
@@ -80,7 +80,7 @@ function reg() {
   * @return {type}  无返回值
   */
  function showPsw (t) {
-   var input = $(t).parent().prev('input');
+   let input = $(t).parent().prev('input');
    if($(input).attr('type') == 'password') {
      $(t).attr('src', 'img/visible.png');
      $(input).attr('type', 'text')
